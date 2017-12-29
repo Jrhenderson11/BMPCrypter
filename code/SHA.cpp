@@ -77,18 +77,14 @@ unsigned char* getHash(char *rawData, unsigned long len) {
 	//64 bit
 	//HERE WE GO BASTERDS
 
-	//// add length (in bits) into final pair of 32-bit integers (big-endian) [§5.1.1]
-	//// note: most significant word would be (len-1)*8 >>> 32, but since JS converts
-	//// bitwise-op args to 32 bits, we need to simulate this by arithmetic operators
+	//// add length (in bits) into final pair of 32-bit integers because C is annoying like that
+
 	unsigned int lenHi = (bitLen) >>8;
 	unsigned int lenLo = (bitLen) >> 0;
 	
 	printf("append: %d\n", bitLen);
 	data[fullsize-2] = floor(lenHi);
 	data[fullsize - 1] = lenLo;
-
-
-
 
 	printf("len: %x\n", bitLen);
 	printf("padded data + len: \n");
@@ -97,9 +93,6 @@ unsigned char* getHash(char *rawData, unsigned long len) {
 		printf_s("%x", data[i], 1);
 	}
 	printf("\n");
-
-	
-
 
 
 	//split into chunks

@@ -3,10 +3,16 @@
 #include <stdio.h>
 #include <iomanip>
 
-#include <C:\Users\jrhen\Desktop\cryptopp565\dll.h>
-#include <C:\Users\jrhen\Desktop\cryptopp565\modes.h>
-#include <C:\Users\jrhen\Desktop\cryptopp565\aes.h>
-#include <C:\Users\jrhen\Desktop\cryptopp565\filters.h>
+// sooooo
+// because I found the libs hard to install (remember this is my first real C project) I kind of just dumped the lib folder on my desktop and linked the headers
+// It would probably be better if I redid the whole library used
+// I've heard OpenSSL is very good
+
+
+#include <C:\Users\XXX\Desktop\cryptopp565\dll.h>
+#include <C:\Users\XXXX\Desktop\cryptopp565\modes.h>
+#include <C:\Users\XXX\Desktop\cryptopp565\aes.h>
+#include <C:\Users\XXX\Desktop\cryptopp565\filters.h>
 #include "AES.h"
 
 
