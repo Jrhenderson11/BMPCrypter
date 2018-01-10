@@ -1,5 +1,3 @@
-
-
 #include <stdio.h>
 #include <iostream>
 #include "stdafx.h"
@@ -9,11 +7,9 @@
 #define _CRT_SECURE_NO_WARNINGS
 using namespace std;
 
-
 ImageData* loadFile(char* filename) {
 
 	printf("file: %s\n", filename);
-	
 
 	FILE* picture;
 	fopen_s(&picture, filename, "rb");
@@ -38,7 +34,6 @@ ImageData* loadFile(char* filename) {
 	fread(&header.reserved, sizeof(unsigned int), 1, picture);
 	fread(&header.offset, sizeof(unsigned int), 1, picture);
 
-
 	// VALIDATE HEADER
 	//put this in multiple lines because I prefer that too one massive unreadable one
 	if (header.sig[0]!='B' || header.sig[1]!='M') {
@@ -53,10 +48,8 @@ ImageData* loadFile(char* filename) {
 	//test 
 
 	printf("sig: %c%c\n", header.sig[0], header.sig[1]);
-	
 	printf("size: %d\n", header.size);
 	printf("offset: %d\n", header.offset);
-
 
 	//=========================== INFO HEADER =========================== \\
 	//has to be read manually
@@ -70,20 +63,13 @@ ImageData* loadFile(char* filename) {
 	printf("size: %d\n", infosize);
 
 	if (infosize != 40) {
-		
 			printf("error opening file (file must have correct INFOHEADER)\n");
 			return NULL;
-		
 	} else {
-		
-
 		InfoHeader info;
-
 		fread(&info, sizeof(InfoHeader), 1, picture);
 
-
 		unsigned int skipbits = (4 - ((info.width * 3) % 4));
-
 		if (info.bitsperpixel != 24) {
 			printf("non-compatible image: must have 24 bits-per-pixel\n");
 			return NULL;
@@ -92,9 +78,6 @@ ImageData* loadFile(char* filename) {
 			printf("error opening file (offset / size)\n");
 			return NULL;
 		}
-
-		// VALIDATE
-
 		//DISPLAY
 
 		printf("width: %d\n", info.width);
@@ -107,10 +90,7 @@ ImageData* loadFile(char* filename) {
 		printf("datasize: %d\n", info.datasize);
 		printf("num colours: %d\n", info.numcolours);
 		
-	
-
 	//copy struct info into local for ease of use
-		
 	unsigned int width = info.width;
 	unsigned int height = info.height;
 		
@@ -120,10 +100,6 @@ ImageData* loadFile(char* filename) {
 	fseek(picture, header.offset, SEEK_SET);
 	
 	//read data into array
-
-	
-
-
 	Pixel **pixels = new Pixel*[width];
 	for (int i = 0; i< width ; i++) {
 		pixels[i] = new Pixel[height];
@@ -137,9 +113,6 @@ ImageData* loadFile(char* filename) {
 			printf("%x  %x  %x\n", pixels[x][y].blue, pixels[x][y].green, pixels[x][y].red);
 		}
 		fseek(picture, skipbits, SEEK_CUR);
-
-		
-
 	}
 	fclose(picture);
 	//consruct final struct and return
@@ -147,14 +120,12 @@ ImageData* loadFile(char* filename) {
 	image.width = width;
 	image.height = height;
 
-
 	char * pixelBuffer = (char*) calloc(width * height , sizeof(Pixel));
 	//int height = image.height;
 	
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
 			int index = (y * (height)) + (x * 3);
-			
 
 			pixelBuffer[index] = pixels[x][y].blue;
 			pixelBuffer[index + 1] = pixels[x][y].green;

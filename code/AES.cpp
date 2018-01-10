@@ -8,13 +8,11 @@
 // It would probably be better if I redid the whole library used
 // I've heard OpenSSL is very good
 
-
 #include <C:\Users\XXX\Desktop\cryptopp565\dll.h>
 #include <C:\Users\XXXX\Desktop\cryptopp565\modes.h>
 #include <C:\Users\XXX\Desktop\cryptopp565\aes.h>
 #include <C:\Users\XXX\Desktop\cryptopp565\filters.h>
 #include "AES.h"
-
 
 void encrypt(char * text, unsigned char key[32], unsigned char iv[CryptoPP::AES::BLOCKSIZE]) {
 	printf("ENCRYPTING\n");
@@ -38,8 +36,6 @@ void encrypt(char * text, unsigned char key[32], unsigned char iv[CryptoPP::AES:
 	}
 
 	printf("ciphertext: %s\n", ciphertext);
-
-
 
 	printf("decrypt?  (y or n)\n");
 	
@@ -70,31 +66,18 @@ void decrypt(std::string ciphertext, unsigned char key[32], unsigned char iv[Cry
 	stfDecryptor.Put(reinterpret_cast<const unsigned char*>(ciphertext.c_str()), ciphertext.size());
 	stfDecryptor.MessageEnd();
 
-	//
-	// Dump Decrypted Text
-	//
 	std::cout << "Decrypted Text: " << std::endl;
 	std::cout << decryptedtext;
 	std::cout << std::endl << std::endl;
 
-
-
 }
 
 void test() {
-
-	//Key and IV setup
-	//AES encryption uses a secret key of a variable length (128-bit, 196-bit or 256-   
-	//bit). This key is secretly exchanged between two parties before communication   
-	//begins. DEFAULT_KEYLENGTH= 16 unsigned chars
 	unsigned char key[CryptoPP::AES::DEFAULT_KEYLENGTH], iv[CryptoPP::AES::BLOCKSIZE];
 	memset(key, 0x00, CryptoPP::AES::DEFAULT_KEYLENGTH);
 	memset(iv, 0x00, CryptoPP::AES::BLOCKSIZE);
 	char * plaintext = "PLAINTEXT";
 	//std::string ciphertext = encrypt(plaintext, key, iv);
 	//decrypt(ciphertext, key, iv);
-
-
 	getchar();
-
 }

@@ -8,10 +8,8 @@
 #include <iostream>
 using namespace std;
 
-
 void displayIntro() {
 	printf("\nWELCOME\n\n");
-
 }
 
 void printHex(unsigned char* data, unsigned int len) {
@@ -21,26 +19,12 @@ void printHex(unsigned char* data, unsigned int len) {
 	printf("\n");
 }
 
+void decryptFile() {}
 
-
-void decryptFile() {
-
-
-
-}
-
-void encryptFile() {
-
-
-}
-
+void encryptFile() {}
 
 int main() {
 	displayIntro();
-
-
-
-
 
 	printf("Do you want to Encrypt or Decrypt?                (e or d)\n");
 	char mode = 'a';//getchar();// getchar();
@@ -67,13 +51,11 @@ int main() {
 		system("\%windir\%\\system32\\mspaint.exe");
 	}
 
-
 	//get filename
 	char fname[100];
 	printf("enter filename of bitmap to use as key (max 100 characters)\n");
 	scanf_s(" %s", fname, 100);
 	//======================================
-	
 	
 	//ask if delete file
 	printf("delete file after use?                          (y or n)\n");
@@ -89,7 +71,6 @@ int main() {
 	}
 
 	//LOAD IMAGE DATA
-
 	ImageData* image = loadFile(fname);
 
 	if (image == NULL) {
@@ -105,7 +86,6 @@ int main() {
 
 	//extract pixels into single char buffer
 	char * pixelBuffer = image->data;
-
 
 	int height = image->height;
 	int width = image->width;
@@ -123,8 +103,6 @@ int main() {
 	
 	unsigned char* digest = (getHash(pixelBuffer, 256));
 
-
-
 	//DELETE AFTER HASH (helps prevent deletion being cancelled if program is killed before gets to end):
 	if (tolower(in) == 'y') {
 		if (remove(fname) == 0) {
@@ -134,7 +112,6 @@ int main() {
 			printf("error deleting key, make sure you do this manually or key could be reused");
 		}
 	}
-
 
 	unsigned char iv[CryptoPP::AES::BLOCKSIZE] = "13456789101112";
 	if (mode == 'e') {
@@ -149,7 +126,6 @@ int main() {
 	} 
 
 
-
 	//HASH
 	//printf(encrypt("abcdefghijklmnop", 16));
 	//unsigned char* hash = (encrypt("abc", 3));
@@ -162,6 +138,3 @@ int main() {
 	
     return 0;
 }
-
-
-

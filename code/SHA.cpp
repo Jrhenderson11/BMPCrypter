@@ -1,16 +1,13 @@
-
 #include "stdafx.h"
 #include "SHA.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <math.h>
 
 bool debugRotate = false;
 
 unsigned char* getHash(char *rawData, unsigned long len) {
-	
 	
 	printf("Data: \n");
 	printf(rawData);
@@ -19,8 +16,7 @@ unsigned char* getHash(char *rawData, unsigned long len) {
 
 	//init values (hex)
 	unsigned int h[] = { 0x6a09e667 , 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19};
-		
-		
+	
 	unsigned int k[] = {
 		0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
 		0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
@@ -30,21 +26,16 @@ unsigned char* getHash(char *rawData, unsigned long len) {
 		0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
 		0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
 		0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
-
 	};
 	
 	//64!!!!
 	//(512 - (len+1+64 mod 512) mod 512)
-
 	//prep message
-
-
 	unsigned long bitLen = len * 8;
 	unsigned long fullsize = (bitLen +65+ (512 - ((bitLen + 1 + 64) % 512) % 512) ) /8;
 
 	char* data = (char*) calloc(fullsize, 1);
 	printf("size of data: %d\n", fullsize);
-
 
 	memcpy(data, rawData, len);
 
@@ -71,12 +62,7 @@ unsigned char* getHash(char *rawData, unsigned long len) {
 	printf("\n");
 	
 	//COPY LEN TO THE END OF data
-
-
-
 	//64 bit
-	//HERE WE GO BASTERDS
-
 	//// add length (in bits) into final pair of 32-bit integers because C is annoying like that
 
 	unsigned int lenHi = (bitLen) >>8;
@@ -94,9 +80,7 @@ unsigned char* getHash(char *rawData, unsigned long len) {
 	}
 	printf("\n");
 
-
 	//split into chunks
-
 	unsigned int numChunks = (fullsize / 64);
 	unsigned char **chunks = new unsigned char*[numChunks];
 
@@ -106,23 +90,15 @@ unsigned char* getHash(char *rawData, unsigned long len) {
 		chunks[i] = new unsigned char[64]; // TICK
 		memcpy(chunks[i], (&data[64*i]), 64);
 
-
-
 		printf("chunk after copying: \n");
 		for (int count = 0; count < 64; count++) {
 			printf_s("%x", chunks[i][count], 1);
 		}
 		printf("\n");
 	}
-
-	//TEST
-	
-	
 	//process chunks
 	for (unsigned int cNum = 0; cNum < numChunks; cNum++) {
-
-
-		//create words array and 0
+		//create words array and fill with 0's
 		unsigned int* words = (unsigned int*) calloc(64,8);
 		for (int count = 0; count < 16; count++) {
 			printf_s("words when intialized: %d\n", words[count], 1);
@@ -145,7 +121,7 @@ unsigned char* getHash(char *rawData, unsigned long len) {
 		}
 		
 		printf("size of data: %d\n", fullsize);
-	//===============================================================================
+		//===============================================================================
 		for (unsigned int i = 0; i < 64; i+=4) {
 			unsigned int findex = i / 4;
 
@@ -160,14 +136,9 @@ unsigned char* getHash(char *rawData, unsigned long len) {
 			}
 			//copy word backward into flipped
 
-
 			/*printf("word : ");
 			displayBinC(word, 4);*/
-
-
 			memcpy(flipped[findex], revword, 4);
-			
-			
 		}
 		
 		//============================================================================================
@@ -180,27 +151,15 @@ unsigned char* getHash(char *rawData, unsigned long len) {
 		printf("\n");
 		printf("Chunk: ");
 		displayBinC(chunks[cNum], 64);
-		
+	
 
 		//transpose flipped into words THE CORRECT BLOODY WAY
-		
-		//OFC THIS IS FUCKING INSANE
-		//these are bloody pointers u fucking moron
-		//memcpy(words, flipped, 64);
+	
+		//WORNG: memcpy(words, flipped, 64);
 		for (int count = 0; count < 16; count++) {
 			memcpy(&words[count], flipped[count], 4);
 		
 		}
-
-
-
-
-
-
-
-
-
-
 		
 		printf("words after copying from flipped:\n");
 		//CHECK
@@ -208,7 +167,6 @@ unsigned char* getHash(char *rawData, unsigned long len) {
 
 		//doesnt look right somehow
 		for (int count = 0; count < 64; count++) {
-
 			//printf_s("%x-", words[count], 4);
 			printf("word[%d]: ", count);
 			displayBin(words[count]);
@@ -216,12 +174,7 @@ unsigned char* getHash(char *rawData, unsigned long len) {
 		
 		printf("\n");
 
-
-
-
-		//================================================================================= COULD BE HERE
 		for (unsigned int i = 16; i< 64; i++) {
-
 			
 			unsigned int sigma0 = (rightRotate(words[i - 15], 7)) ^ (rightRotate(words[i - 15], 18)) ^ (words[i - 15] >> 3);
 			printf("i: %d\n", i);
@@ -231,17 +184,12 @@ unsigned char* getHash(char *rawData, unsigned long len) {
 			printf("input: %d\n", words[i-2]);
 			//displayBin(sigma1);
 
-
 			unsigned int sigma1 = (rightRotate(words[i - 2], 17)) ^ (rightRotate(words[i - 2], 19)) ^ (words[i - 2] >> 10);
 			printf("sigma1: %d\n", sigma1);
 			displayBin(sigma1);
 
-
-
 			words[i] = words[i - 16] + sigma0 + words[i - 7] + sigma1;
 			//words[i] = words[i - 16] + sigma0 + sigma1;
-
-
 		}
 
 		unsigned int a = h[0];
@@ -258,26 +206,20 @@ unsigned char* getHash(char *rawData, unsigned long len) {
 		for (int i = 0; i < 64; i++) {
 
 			unsigned int sum1 = (rightRotate(e, 6)) ^ (rightRotate(e, 11)) ^ (rightRotate(e, 25)); //CORRECT 
-		
 			unsigned int ch = (e & f) ^ ((~e) & g); //CORRECT
-		
 			unsigned int temp1 = HH + sum1 + ch + k[i] + words[i];
-
 			unsigned int sum0 = (rightRotate(a, 2)) ^ (rightRotate(a, 13)) ^ (rightRotate(a, 22));
-
 			unsigned int maj = (a & b) ^ (a & c) ^ (b & c);
-
 			unsigned int temp2 = sum0 + maj;
-
 
 			HH = g;
 			g = f;
 			f = e;
-			e = d + temp1; //INCORRECT
+			e = d + temp1;
 			d = c;
 			c = b;
 			b = a; 
-			a = temp1 + temp2; //INCORRECT
+			a = temp1 + temp2;
 		
 			printf("t: %d ", i);
 			printf("a: %x ", a);
@@ -291,26 +233,16 @@ unsigned char* getHash(char *rawData, unsigned long len) {
 			//free(words);
 		}
 
-
-		//unsigned int h[] = { 0x6a09e667 , 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19};
-
-
 		h[0] += a;
-		h[1] = h[1] + b;
-		h[2] = h[2] + c;
-		h[3] = h[3] + d;
-		h[4] = h[4] + e;
-		h[5] = h[5] + f;
-		h[6] = h[6] + g;
-		h[7] = h[7] + HH;
-
-		
-		
+		h[1] += b;
+		h[2] += c;
+		h[3] += d;
+		h[4] += e;
+		h[5] += f;
+		h[6] += g;
+		h[7] += HH;
+	
 	}
-
-
-
-
 
 	char* hash = (char*) malloc(256);
 	
@@ -320,10 +252,6 @@ unsigned char* getHash(char *rawData, unsigned long len) {
 
 		//concatenate each part of hash to form complete 
 		sprintf_s(hash + (i * sizeof(unsigned int)), 32, "%x", part);
-		//printf(hash);
-
-		
-
 	}
 
 	printf("hash: %x\n", *hash);
@@ -390,9 +318,5 @@ void displayBinC(unsigned char* data, int len) {
 		}
 		printf("-");
 	}
-
-	
-	
-
 	printf("\n");
 }
