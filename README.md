@@ -26,8 +26,7 @@ Load bmp image file -> hash pixel colour data -> use as key for AES
 Here are some resources I used while writing the SHA code, they provide a good (very technical and official) explanation of SHA 
 
 NIST standard for SHA256: http://csrc.nist.gov/groups/ST/toolkit/documents/Examples/SHA256.pdf
-
-                          http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf
+http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf
 
 RFC standard for SHA256:  https://tools.ietf.org/html/rfc4634
 
